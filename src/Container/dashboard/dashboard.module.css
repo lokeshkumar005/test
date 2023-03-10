@@ -1,0 +1,28 @@
+.container{
+    margin: 10rem 32rem;
+    width: 70rem;
+}
+
+.dataContainer{
+  display: flex;
+  justify-content: space-between;
+  /* border: 1px solid rgb(33, 33, 33); */
+  height: 20rem;
+}
+
+.inputContainer{
+  /* text-align: center; */
+  padding: 3rem;
+}
+.inputContainerData input{
+  margin: 1rem 0;
+  padding: 1rem;
+}
+
+.outputContainer{
+  /* text-align: center; */
+  padding: 1rem;
+}
+.outputContainerData textarea{
+  margin: 1rem 0;
+}
