@@ -1,34 +1,30 @@
+import { chatApi, handleSpeechToText } from "@/Apis/datasend";
 import React, { useState } from "react";
-import { handleSpeechToText } from "../../Apis/datasend";
 
 const Dashboard = () => {
   const [file, setFile] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const handleFileUpload = (event) => {
-    setFile(event.target.file);
+    setFile(event.target.files[0]);
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append("/public/test_audio.mp3", file);
+    formData.append("file", file);
+    formData.append("model", "whisper-1");
 
-    handleSpeechToText(formData);
-    // try {
-    //   const response = await axios.post(
-    //     "https://api.openai.com/v1/audio/transcriptions",
-    //     formData,
-    //     {
-    //       headers: { "Content-Type": "multipart/form-data" },
-    //     }
-    //   );
-    //   console.log(response.data);
-    //   setSuccess(true);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    const audioResponse = await handleSpeechToText(formData);
+    // console.log({ audioResponse });
+    const textResponse = await chatApi(audioResponse.text);
+    // console.log({ textResponse });
+
+    const data = textResponse?.choices?.[0]?.message?.content;
+    console.log({ data });
+    setMessage(data);
   };
 
   return (
@@ -39,7 +35,7 @@ const Dashboard = () => {
       </form>
       <div>{success && <p>File uploaded successfully</p>}</div>
       <br />
-      <textarea name="output" id="" cols="30" rows="10"></textarea>
+      <div>{message}</div>
     </div>
   );
 };
